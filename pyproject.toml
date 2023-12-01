@@ -1,0 +1,52 @@
+[tool.poetry]
+name = "python_ishare"
+version = "0.1.0"
+description = "iShare python interface client package"
+readme = "README.md"
+authors = [
+
+]
+packages = [
+    { include = "python_ishare", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.8.1"
+pyjwt = "^2.8.0"
+cryptography = "^41.0.5"
+
+[tool.poetry.group.dev.dependencies]
+bandit = {extras = ["toml"], version = "^1.7.5"}
+black = {extras = ["d"], version = "^23.11.0"}
+flake8 = "^6"
+isort = "^5.12.0"
+mypy = "^1.7.0"
+pytest = "^7.4.2"
+pytest-cov = "^4.1.0"
+pytest-mock = "^3.11.1"
+responses = "^0.24.0"
+safety = "^2.3.5"
+tox = "^4.0.0"
+types-pyyaml = "^6.0.12.12"
+types-requests = ">2.31.0.7"
+
+[tool.isort]
+profile = "black"
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+
+[tool.mypy]
+files = ["src/*"]
+exclude = ["tests"]
+ignore_missing_imports = true
+strict = true
+show_error_codes = true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--tb=native --cov=python_ishare --cov-report=html --cov-branch"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
