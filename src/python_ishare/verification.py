@@ -1,9 +1,7 @@
-import base64
 import re
 from typing import Any, Literal
 
 import jwt
-from cryptography.x509 import load_der_x509_certificate
 from jwt import ExpiredSignatureError, ImmatureSignatureError, InvalidAudienceError
 
 from python_ishare import exceptions as ishare_exc

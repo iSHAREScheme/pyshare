@@ -3,16 +3,16 @@ name: Continuous Integration
 on:
   push:
     branches:
-      - 'main'
+      - main
   pull_request:
-    types: [opened, reopened]
+    types: [opened, synchronize, reopened]
 jobs:
   continuous-integration:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        py: ["python:3.11", "python:3.10", "python:3.9"]
-    name: ${{ matrix.python-version }} testing & linters
+        py: ["3.12", "3.11", "3.10", "3.9"]
+    name: Python v${{ matrix.py }} testing & linters
     steps:
       - uses: actions/checkout@v4
       - name: Install poetry

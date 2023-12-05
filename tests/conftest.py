@@ -2,9 +2,8 @@ import base64
 from pathlib import Path
 
 import pytest
-from cryptography.hazmat.primitives.serialization import Encoding
 from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey
-from cryptography.hazmat.primitives.serialization import load_pem_private_key
+from cryptography.hazmat.primitives.serialization import Encoding, load_pem_private_key
 from cryptography.x509 import Certificate, load_pem_x509_certificates
 
 
@@ -48,7 +47,11 @@ def get_key_and_certs(read_file_bytes):
         x509_b64 = []
         for cert in x509:
             x509_b64.append(
-                str(base64.b64encode(cert.public_bytes(encoding=Encoding.DER)), encoding="utf8"))
+                str(
+                    base64.b64encode(cert.public_bytes(encoding=Encoding.DER)),
+                    encoding="utf8",
+                )
+            )
 
         return key, x509, x509_b64
 
