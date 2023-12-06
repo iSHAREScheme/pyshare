@@ -2,12 +2,12 @@ import base64
 import json
 import time
 import uuid
-from typing import Any, Optional, TypedDict, Union, Iterator
+from typing import Any, Iterator, Optional, TypedDict, Union
 
 import jwt
 from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.serialization import Encoding
 from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey
+from cryptography.hazmat.primitives.serialization import Encoding
 from cryptography.x509 import Certificate, load_der_x509_certificate
 from typing_extensions import NotRequired
 
@@ -44,12 +44,7 @@ def x5c_certificates_to_b64(certs: list[Certificate]) -> Iterator[str]:
     """Convert the certificate to a x509 header."""
     for cert in certs:
         yield str(
-            base64.b64encode(
-                cert.public_bytes(
-                    encoding=Encoding.DER
-                )
-            ),
-            encoding="utf8"
+            base64.b64encode(cert.public_bytes(encoding=Encoding.DER)), encoding="utf8"
         )
 
 
@@ -103,7 +98,7 @@ def create_jwt(
     headers = {
         "alg": ENCRYPTION_ALGORITHM,
         "typ": "JWT",
-        "x5c": [c for c in x5c_certificates_to_b64(certs=x5c_certificate_chain)]
+        "x5c": [c for c in x5c_certificates_to_b64(certs=x5c_certificate_chain)],
     }
 
     _payload = {**payload}

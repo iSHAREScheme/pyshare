@@ -4,8 +4,8 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey
 from cryptography.x509 import (
     Certificate,
+    load_der_x509_certificate,
     load_pem_x509_certificate,
-    load_der_x509_certificate
 )
 
 from python_ishare.authentication import create_jwt
@@ -59,8 +59,7 @@ def rsa_private_key_unencrypted(
 
 @pytest.fixture(scope="session")
 def pb_public_x509_chain(
-        read_file_bytes,
-        integration_data_directory
+    read_file_bytes, integration_data_directory
 ) -> list[Certificate]:
     return [
         load_der_x509_certificate(
@@ -71,7 +70,7 @@ def pb_public_x509_chain(
         ),
         load_der_x509_certificate(
             read_file_bytes(integration_data_directory / "pb_public_cert_3.der"),
-        )
+        ),
     ]
 
 

@@ -2,6 +2,7 @@ from datetime import datetime
 
 import jwt
 import pytest
+
 from python_ishare.authentication import create_jwt
 from python_ishare.exceptions import (
     IShareInvalidAudience,

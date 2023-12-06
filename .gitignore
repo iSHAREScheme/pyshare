@@ -67,3 +67,4 @@ Thumbs.db
 
 # integration test data
 tests/data/integration
+coverage.xml
