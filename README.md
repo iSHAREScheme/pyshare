@@ -39,6 +39,19 @@ All of these are required to encrypt and decrypt communication between different
 iSHARE services. For more detailed information refer to the `private key jwt` json web 
 token flow [here](https://oauth.net/private-key-jwt/).
 
+### Installation
+Install this package using `pip`;
+
+```shell
+pip install python-ishare
+```
+
+or using poetry;
+
+```shell
+poetry add python-ishare
+```
+
 ### The three-step methodology
 
 1. Create a json web token per iSHARE [specification](https://dev.ishare.eu/introduction/jwt.html)).
