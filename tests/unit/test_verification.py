@@ -5,18 +5,18 @@ import pytest
 
 from python_ishare.authentication import create_jwt
 from python_ishare.exceptions import (
-    IShareInvalidAudience,
-    IShareInvalidClientAssertionType,
-    IShareInvalidClientId,
-    IShareInvalidGrantType,
-    IShareInvalidScope,
-    IShareInvalidTokenAlgorithm,
-    IShareInvalidTokenIssuerOrSubscriber,
-    IShareInvalidTokenJTI,
-    IShareInvalidTokenType,
-    IShareTokenExpirationInvalid,
-    IShareTokenExpired,
-    IShareTokenNotValidYet,
+    ISHAREInvalidAudience,
+    ISHAREInvalidClientAssertionType,
+    ISHAREInvalidClientId,
+    ISHAREInvalidGrantType,
+    ISHAREInvalidScope,
+    ISHAREInvalidTokenAlgorithm,
+    ISHAREInvalidTokenIssuerOrSubscriber,
+    ISHAREInvalidTokenJTI,
+    ISHAREInvalidTokenType,
+    ISHARETokenExpirationInvalid,
+    ISHARETokenExpired,
+    ISHARETokenNotValidYet,
 )
 from python_ishare.verification import validate_client_assertion
 
@@ -24,7 +24,7 @@ CLIENT_ASSERTION_TYPE = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
 
 
 def test_invalid_grant_type():
-    with pytest.raises(IShareInvalidGrantType):
+    with pytest.raises(ISHAREInvalidGrantType):
         validate_client_assertion(
             grant_type="",
             client_id="",
@@ -36,7 +36,7 @@ def test_invalid_grant_type():
 
 
 def test_invalid_scope():
-    with pytest.raises(IShareInvalidScope):
+    with pytest.raises(ISHAREInvalidScope):
         validate_client_assertion(
             grant_type="client_credentials",
             client_assertion_type="",
@@ -57,7 +57,7 @@ def test_audience_mismatch(satellite_key_and_certs):
         x5c_certificate_chain=public_cert_chain,
     )
 
-    with pytest.raises(IShareInvalidAudience):
+    with pytest.raises(ISHAREInvalidAudience):
         validate_client_assertion(
             grant_type="client_credentials",
             scope="iSHARE",
@@ -78,7 +78,7 @@ def test_no_client_id(satellite_key_and_certs):
         x5c_certificate_chain=public_cert_chain,
     )
 
-    with pytest.raises(IShareInvalidClientId):
+    with pytest.raises(ISHAREInvalidClientId):
         validate_client_assertion(
             grant_type="client_credentials",
             scope="iSHARE",
@@ -98,7 +98,7 @@ def test_invalid_client_id(satellite_key_and_certs):
         x5c_certificate_chain=public_cert_chain,
     )
 
-    with pytest.raises(IShareInvalidClientId):
+    with pytest.raises(ISHAREInvalidClientId):
         validate_client_assertion(
             grant_type="client_credentials",
             scope="iSHARE",
@@ -110,7 +110,7 @@ def test_invalid_client_id(satellite_key_and_certs):
 
 
 def test_invalid_client_assertion_type():
-    with pytest.raises(IShareInvalidClientAssertionType):
+    with pytest.raises(ISHAREInvalidClientAssertionType):
         validate_client_assertion(
             grant_type="client_credentials",
             scope="iSHARE",
@@ -129,7 +129,7 @@ def test_invalid_algorithm(satellite_key_and_certs):
         payload={}, key=rsa_key, headers=token_headers, algorithm="RS384"
     )
 
-    with pytest.raises(IShareInvalidTokenAlgorithm):
+    with pytest.raises(ISHAREInvalidTokenAlgorithm):
         validate_client_assertion(
             grant_type="client_credentials",
             scope="iSHARE",
@@ -148,7 +148,7 @@ def test_invalid_token_type(satellite_key_and_certs):
         payload={}, key=rsa_key, headers=token_headers, algorithm="RS256"
     )
 
-    with pytest.raises(IShareInvalidTokenType):
+    with pytest.raises(ISHAREInvalidTokenType):
         validate_client_assertion(
             grant_type="client_credentials",
             scope="iSHARE",
@@ -173,7 +173,7 @@ def test_invalid_issuer_or_subscriber(satellite_client, satellite_key_and_certs)
         x5c_certificate_chain=public_cert_chain,
     )
 
-    with pytest.raises(IShareInvalidTokenIssuerOrSubscriber):
+    with pytest.raises(ISHAREInvalidTokenIssuerOrSubscriber):
         validate_client_assertion(
             grant_type="client_credentials",
             scope="iSHARE",
@@ -200,7 +200,7 @@ def test_invalid_jti(satellite_key_and_certs):
         algorithm="RS256",
     )
 
-    with pytest.raises(IShareInvalidTokenJTI):
+    with pytest.raises(ISHAREInvalidTokenJTI):
         validate_client_assertion(
             grant_type="client_credentials",
             scope="iSHARE",
@@ -230,7 +230,7 @@ def test_invalid_expiration(satellite_key_and_certs):
         algorithm="RS256",
     )
 
-    with pytest.raises(IShareTokenExpirationInvalid):
+    with pytest.raises(ISHARETokenExpirationInvalid):
         validate_client_assertion(
             grant_type="client_credentials",
             scope="iSHARE",
@@ -260,7 +260,7 @@ def test_token_not_valid_yet(satellite_key_and_certs):
         algorithm="RS256",
     )
 
-    with pytest.raises(IShareTokenNotValidYet):
+    with pytest.raises(ISHARETokenNotValidYet):
         validate_client_assertion(
             grant_type="client_credentials",
             scope="iSHARE",
@@ -289,7 +289,7 @@ def test_token_expired(satellite_key_and_certs):
         algorithm="RS256",
     )
 
-    with pytest.raises(IShareTokenExpired):
+    with pytest.raises(ISHARETokenExpired):
         validate_client_assertion(
             grant_type="client_credentials",
             scope="iSHARE",

@@ -9,7 +9,7 @@ from cryptography.x509 import (
 )
 
 from python_ishare.authentication import create_jwt
-from python_ishare.clients import CommonBaseClient, IShareSatelliteClient
+from python_ishare.clients import CommonBaseClient, ISHARESatelliteClient
 
 PB_CLIENT_EORI = "EU.EORI.PBADAPTER"
 
@@ -144,6 +144,6 @@ def integrated_common_auth_client(integration_client_settings) -> CommonBaseClie
 @pytest.fixture()
 def integrated_ishare_satellite_client(
     integration_client_settings,
-) -> IShareSatelliteClient:
+) -> ISHARESatelliteClient:
     """IShareSatelliteClient with integration configuration."""
-    return IShareSatelliteClient(**integration_client_settings)
+    return ISHARESatelliteClient(**integration_client_settings)

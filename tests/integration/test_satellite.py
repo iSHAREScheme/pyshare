@@ -1,8 +1,8 @@
 import pytest
 
 from python_ishare.exceptions import (
-    IShareInvalidCertificateIssuer,
-    ISharePartyStatusInvalid,
+    ISHAREInvalidCertificateIssuer,
+    ISHAREPartyStatusInvalid,
 )
 
 
@@ -43,7 +43,7 @@ def test_verify_certificate(integrated_ishare_satellite_client, pb_jwt_for_satel
         integrated_ishare_satellite_client.verify_ca_certificate(
             json_web_token=pb_jwt_for_satellite
         )
-    except IShareInvalidCertificateIssuer:
+    except ISHAREInvalidCertificateIssuer:
         pytest.fail(
             "This should be a valid CA check. If this fails the certificate is not "
             "signed by a correct CA *or* the CA was removed from the trusted_list."
@@ -52,7 +52,7 @@ def test_verify_certificate(integrated_ishare_satellite_client, pb_jwt_for_satel
 
 def test_verify_invalid_certificate(integrated_ishare_satellite_client, pb_jwt_invalid):
     """Test whether we can verify our own certificate using the satellite."""
-    with pytest.raises(IShareInvalidCertificateIssuer):
+    with pytest.raises(ISHAREInvalidCertificateIssuer):
         integrated_ishare_satellite_client.verify_ca_certificate(
             json_web_token=pb_jwt_invalid
         )

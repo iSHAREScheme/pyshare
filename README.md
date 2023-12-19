@@ -1,7 +1,7 @@
 ## Introduction
 Welcome to the python ishare package. This package implements helpers for the 
-authentication flow between iShare services. Specifically, the part of the process 
-where a json web token (per ishare specification) is transformed into an access token. 
+authentication flow between iSHARE services. Specifically, the part of the process 
+where a json web token (per iSHARE specification) is transformed into an access token. 
 This access token can then be used to communicate with the rest of a Role's service 
 endpoints.
 
@@ -13,37 +13,37 @@ This package could be relevant for connecting to/from the following
 - Service or Data Provider
 - Service or Data Consumers
 
-For more information on iShare;
-* [The iShare website](https://ishare.eu/nl/)
+For more information on ISHARE;
+* [The ISHARE website](https://ishare.eu/nl/)
 * [The developer documentation](https://dev.ishare.eu/)
-* [The iShare Framework](https://ishareworks.atlassian.net/wiki/spaces/IS/overview)
-* [The iShare Satellite repository](https://github.com/iSHAREScheme/iSHARESatellite)
+* [The ISHARE Framework](https://ishareworks.atlassian.net/wiki/spaces/IS/overview)
+* [The ISHARE Satellite repository](https://github.com/iSHAREScheme/iSHARESatellite)
 
 ## Usage
 
 ### Prerequisites
-For a working connection with, for example, an iShare satellite you need a participant 
+For a working connection with, for example, an iSHARE satellite you need a participant 
 registration. 
 
-- From the registration with an iShare Satellite. 
+- From the registration with an iSHARE Satellite. 
   - (encryption) The registered Certificate's *private* RSA key. This must be kept SECRET!
   - (`x509 header`) The registered Certificate's *public* x509 certificate chain. 
   - (`client_id`) The registered participant's EORI number
   - The registered participant adherence status is "Active".
 - For every participant Service you want to connect to:
   - (`audience`) The target service's EORI number
-  - (decryption) Their public x509 (can be retrieved from an iShare Satellite)
+  - (decryption) Their public x509 (can be retrieved from an iSHARE Satellite)
   - The domain of the service you're connecting to
 
 All of these are required to encrypt and decrypt communication between different the 
-iShare services. For more detailed information refer to the `private key jwt` json web 
+iSHARE services. For more detailed information refer to the `private key jwt` json web 
 token flow [here](https://oauth.net/private-key-jwt/).
 
 ### The three-step methodology
 
-1. Create a json web token per ishare [specification](https://dev.ishare.eu/introduction/jwt.html)).
+1. Create a json web token per iSHARE [specification](https://dev.ishare.eu/introduction/jwt.html)).
 2. Use a client interface to communicate with a role
-3. Use the `IShareSatelliteClient` interface to verify a participant
+3. Use the `ISHARESatelliteClient` interface to verify a participant
 
 #### I. Creating the json web token
 
@@ -95,20 +95,20 @@ for two reasons;
 - It makes it possible to sign the json web token externally using an AWS asymmetric key 
 for example. A great security solution.
 
-#### II. Connecting to an iShare Satellite
+#### II. Connecting to an iSHARE Satellite
 
-To connect to an iShare satellite this package provides an `IShareSatelliteClient` 
+To connect to an iSHARE satellite this package provides an `ISHARESatelliteClient` 
 interface class.
 
 ```python
-from python_ishare import IShareSatelliteClient
+from python_ishare import ISHARESatelliteClient
 
 # From step 1
 YOUR_PARTICIPANT_EORI = "XXX"
 my_token = create_jwt(...)
 public_key = ...
 
-client = IShareSatelliteClient(
+client = ISHARESatelliteClient(
     target_domain="satellite.ishare.com",
     target_public_key=public_key,
     client_eori=YOUR_PARTICIPANT_EORI,
@@ -127,10 +127,10 @@ print(public_capabilities)
 The value of this interface class is that you never needed to worry about access tokens.
 This is handled for you underwater. Tokens are re-used whenever a new request is made. 
 
-#### III. Verifying an iShare participant
+#### III. Verifying an iSHARE participant
 
 Verifying a participant is a key responsibility for a number of roles. The 
-`IShareSatelliteClient` has a method to do this for you. 
+`ISHARESatelliteClient` has a method to do this for you. 
 
 ```python
 # From step 2
@@ -140,7 +140,7 @@ client = IShareSatelliteClient(...)
 # Assuming you have some python web framework there will be a request
 request = ...
 
-# If you're a service provider, you can use this to verify other parties ishare tokens
+# If you're a service provider, you can use this to verify other parties iSHARE tokens
 client.verify_json_web_token(
     audience=YOUR_PARTICIPANT_EORI,
     client_id=request.param["client_id"],
