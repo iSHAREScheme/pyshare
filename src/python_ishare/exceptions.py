@@ -1,4 +1,4 @@
-class IShareAuthenticationException(Exception):
+class ISHAREAuthenticationException(Exception):
     """
     Base class exception to be able to catch *all* other types of sub exception raised
     by this package.
@@ -7,77 +7,77 @@ class IShareAuthenticationException(Exception):
     pass
 
 
-class IShareInvalidGrantType(IShareAuthenticationException):
+class ISHAREInvalidGrantType(ISHAREAuthenticationException):
     pass
 
 
-class IShareInvalidScope(IShareAuthenticationException):
+class ISHAREInvalidScope(ISHAREAuthenticationException):
     pass
 
 
-class IShareInvalidAudience(IShareAuthenticationException):
+class ISHAREInvalidAudience(ISHAREAuthenticationException):
     pass
 
 
-class IShareInvalidClientId(IShareAuthenticationException):
+class ISHAREInvalidClientId(ISHAREAuthenticationException):
     pass
 
 
-class IShareInvalidClientAssertionType(IShareAuthenticationException):
+class ISHAREInvalidClientAssertionType(ISHAREAuthenticationException):
     pass
 
 
-class IShareInvalidToken(IShareAuthenticationException):
+class ISHAREInvalidToken(ISHAREAuthenticationException):
     pass
 
 
-class IShareInvalidTokenAlgorithm(IShareInvalidToken):
+class ISHAREInvalidTokenAlgorithm(ISHAREInvalidToken):
     pass
 
 
-class IShareInvalidTokenType(IShareInvalidToken):
+class ISHAREInvalidTokenType(ISHAREInvalidToken):
     pass
 
 
-class IShareInvalidTokenX5C(IShareInvalidToken):
+class ISHAREInvalidTokenX5C(ISHAREInvalidToken):
     pass
 
 
-class IShareInvalidTokenIssuerOrSubscriber(IShareInvalidToken):
+class ISHAREInvalidTokenIssuerOrSubscriber(ISHAREInvalidToken):
     pass
 
 
-class IShareInvalidTokenJTI(IShareInvalidToken):
+class ISHAREInvalidTokenJTI(ISHAREInvalidToken):
     pass
 
 
-class IShareTokenExpirationInvalid(IShareInvalidToken):
+class ISHARETokenExpirationInvalid(ISHAREInvalidToken):
     pass
 
 
-class IShareTokenExpired(IShareInvalidToken):
+class ISHARETokenExpired(ISHAREInvalidToken):
     pass
 
 
-class IShareTokenNotValidYet(IShareInvalidToken):
+class ISHARETokenNotValidYet(ISHAREInvalidToken):
     pass
 
 
-class IShareInvalidTokenSigner(IShareInvalidToken):
+class ISHAREInvalidTokenSigner(ISHAREInvalidToken):
     pass
 
 
-class IShareInvalidCertificate(IShareAuthenticationException):
+class ISHAREInvalidCertificate(ISHAREAuthenticationException):
     pass
 
 
-class IShareCertificateExpired(IShareInvalidCertificate):
+class ISHARECertificateExpired(ISHAREInvalidCertificate):
     pass
 
 
-class IShareInvalidCertificateIssuer(IShareInvalidCertificate):
+class ISHAREInvalidCertificateIssuer(ISHAREInvalidCertificate):
     pass
 
 
-class ISharePartyStatusInvalid(IShareAuthenticationException):
+class ISHAREPartyStatusInvalid(ISHAREAuthenticationException):
     pass

@@ -11,7 +11,7 @@ from cryptography.hazmat.primitives.serialization import Encoding
 from cryptography.x509 import Certificate, load_der_x509_certificate
 from typing_extensions import NotRequired
 
-from python_ishare.exceptions import IShareInvalidTokenX5C
+from python_ishare.exceptions import ISHAREInvalidTokenX5C
 
 ENCRYPTION_ALGORITHM = "RS256"
 
@@ -56,7 +56,7 @@ def get_b64_x5c_fingerprints(json_web_token: str) -> list[CertificateInfo]:
     x5c = headers.get("x5c")
 
     if not isinstance(x5c, list):
-        raise IShareInvalidTokenX5C("Extracted x5c header is not a list.")
+        raise ISHAREInvalidTokenX5C("Extracted x5c header is not a list.")
 
     _hash = hashes.SHA256()
     _finger_prints: list[CertificateInfo] = []
@@ -80,10 +80,10 @@ def create_jwt(
     **kwargs: dict[str, Union[json.JSONEncoder, bool]]
 ) -> str:
     """
-    Create a valid JWT for iShare specific use. As per the "private_key_jwt"
+    Create a valid JWT for iSHARE specific use. As per the "private_key_jwt"
     methodology in openid connect.
 
-    Note: iShare spec dictates a lifetime of 30 seconds.
+    Note: iSHARE spec dictates a lifetime of 30 seconds.
 
     https://openid.net/specs/openid-connect-core-1_0.html
 
@@ -93,7 +93,7 @@ def create_jwt(
         encrypt the payload.
     :param x5c_certificate_chain: An array of the complete certificate chain that should
         be used to validate the JWT signature. Up until the issuing CA from the
-        trust_list from the relevant iShare Satellite.
+        trust_list from the relevant iSHARE Satellite.
     """
     headers = {
         "alg": ENCRYPTION_ALGORITHM,
@@ -126,14 +126,14 @@ def decode_jwt(
     **kwargs: Any
 ) -> Any:
     """
-    Raises specific exception if IShare JWT is not valid.
+    Raises specific exception if iSHARE JWT is not valid.
 
     :param json_web_token:
     :param public_x509_cert:
-        The public X509 certificate uploaded to an iShare Satellite.
+        The public X509 certificate uploaded to an iSHARE Satellite.
     :param audience: eori of the party receiving the json web token
     :return: they payload of the decoded json_web_token.
-    :raises IShareAuthenticationException: if JWT token not valid
+    :raises ISHAREAuthenticationException: if JWT token not valid
     """
     return jwt.decode(
         jwt=json_web_token,

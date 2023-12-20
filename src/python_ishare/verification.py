@@ -12,7 +12,7 @@ ASSERTION_TYPE = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
 
 def is_valid_eori_number(eori_number: str, strict_eori: bool) -> bool:
     """
-    Returns true if the eori number is valid for use within iShare.
+    Returns true if the eori number is valid for use within iSHARE.
 
     The 'strict_eori' can be set to False if your connecting satellite is not enforcing
     valid eori numbers.
@@ -46,35 +46,35 @@ def validate_client_assertion(
     """
     https://dev.ishare.eu/m2m/authentication.html
 
-    :param client_id: iShare identifier of the Service Consumer.
-    :param client_assertion: the json web token as per iShare specification.
-    :param audience: the iShare identifier of the target service.
+    :param client_id: iSHARE identifier of the Service Consumer.
+    :param client_assertion: the json web token as per iSHARE specification.
+    :param audience: the iSHARE identifier of the target service.
     :param grant_type:
     :param scope:
     :param client_assertion_type:
     :param strict_eori: Whether to validate eori numbers per specification.
-    :raises IShareAuthenticationException: and all it's inheriting classes
+    :raises iSHAREAuthenticationException: and all it's inheriting classes
     :return: The decrypted payload
     """
     if grant_type != "client_credentials":
-        raise ishare_exc.IShareInvalidGrantType()
+        raise ishare_exc.ISHAREInvalidGrantType()
 
     if scope != "iSHARE":
-        raise ishare_exc.IShareInvalidScope()
+        raise ishare_exc.ISHAREInvalidScope()
 
     if client_assertion_type != ASSERTION_TYPE:
-        raise ishare_exc.IShareInvalidClientAssertionType()
+        raise ishare_exc.ISHAREInvalidClientAssertionType()
 
     headers = jwt.get_unverified_header(client_assertion)
 
     if headers["alg"] != "RS256":
-        raise ishare_exc.IShareInvalidTokenAlgorithm()
+        raise ishare_exc.ISHAREInvalidTokenAlgorithm()
 
     if headers["typ"] != "JWT":
-        raise ishare_exc.IShareInvalidTokenType()
+        raise ishare_exc.ISHAREInvalidTokenType()
 
     if headers["x5c"] is None or len(headers["x5c"]) < 1:
-        raise ishare_exc.IShareInvalidCertificate()
+        raise ishare_exc.ISHAREInvalidCertificate()
 
     try:
         jwt_payload: dict[str, Any] = decode_jwt(
@@ -83,25 +83,25 @@ def validate_client_assertion(
             audience=audience,
         )
     except ExpiredSignatureError:
-        raise ishare_exc.IShareTokenExpired()
+        raise ishare_exc.ISHARETokenExpired()
     except ImmatureSignatureError:
-        raise ishare_exc.IShareTokenNotValidYet()
+        raise ishare_exc.ISHARETokenNotValidYet()
     except InvalidAudienceError:
-        raise ishare_exc.IShareInvalidAudience()
+        raise ishare_exc.ISHAREInvalidAudience()
 
     if not is_valid_eori_number(eori_number=client_id, strict_eori=strict_eori):
-        raise ishare_exc.IShareInvalidClientId()
+        raise ishare_exc.ISHAREInvalidClientId()
 
     if client_id != jwt_payload.get("sub") or client_id != jwt_payload.get("iss"):
-        raise ishare_exc.IShareInvalidTokenIssuerOrSubscriber()
+        raise ishare_exc.ISHAREInvalidTokenIssuerOrSubscriber()
 
     if not jwt_payload.get("jti"):
-        raise ishare_exc.IShareInvalidTokenJTI()
+        raise ishare_exc.ISHAREInvalidTokenJTI()
 
     expires: int = jwt_payload.get("exp", 0)
     issued: int = jwt_payload.get("iat", 0)
 
     if expires - issued != 30:
-        raise ishare_exc.IShareTokenExpirationInvalid()
+        raise ishare_exc.ISHARETokenExpirationInvalid()
 
     return jwt_payload

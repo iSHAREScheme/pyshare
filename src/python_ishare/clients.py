@@ -7,8 +7,8 @@ from cryptography.x509 import Certificate
 
 from python_ishare.authentication import decode_jwt, get_b64_x5c_fingerprints
 from python_ishare.exceptions import (
-    IShareInvalidCertificateIssuer,
-    ISharePartyStatusInvalid,
+    ISHAREInvalidCertificateIssuer,
+    ISHAREPartyStatusInvalid,
 )
 from python_ishare.verification import validate_client_assertion
 
@@ -29,7 +29,7 @@ class CommonBaseClient:
     """
     Standalone base client that can be extended for role specific methods.
 
-    - Implements the common auth flow for all iShare participants / roles.
+    - Implements the common auth flow for all iSHARE participants / roles.
     - Implements common api methods
     - Can be extended for different access_token/jwt flow.
 
@@ -57,9 +57,9 @@ class CommonBaseClient:
         """
         :param target_domain: Domain part of the target service, including scheme
         :param target_public_key: Public key to verify the received json web tokens
-        :param client_eori: ishare participant eori of the client
+        :param client_eori: iSHARE participant eori of the client
         :param json_web_token:
-            - type str: pre-made jwt for ishare (see authentication.create_jwt)
+            - type str: pre-made jwt for iSHARE (see authentication.create_jwt)
             - type Callable: a function/class that returns a jwt on demand
         :param timeout: used to stop the web requests to avoid hanging requests
         :param extra: If methods below are overriden this can be used to pass arguments.
@@ -191,9 +191,9 @@ class CommonBaseClient:
         )
 
 
-class IShareSatelliteClient(CommonBaseClient):
+class ISHARESatelliteClient(CommonBaseClient):
     """
-    Responsible for communicating with an iShare Satellite/Scheme Owner.
+    Responsible for communicating with an iSHARE Satellite/Scheme Owner.
     """
 
     def get_trusted_list(self) -> Any:  # pragma: no cover
@@ -238,7 +238,7 @@ class IShareSatelliteClient(CommonBaseClient):
         parties_count = parties_info.get("count", 0)
 
         if not parties_info or parties_count != 1:
-            raise ISharePartyStatusInvalid(
+            raise ISHAREPartyStatusInvalid(
                 f"Invalid result, received {parties_count} parties."
             )
 
@@ -246,17 +246,17 @@ class IShareSatelliteClient(CommonBaseClient):
         only_party = parties_data[0]
 
         if only_party["party_id"] != party_eori:
-            raise ISharePartyStatusInvalid("Invalid party returned.")
+            raise ISHAREPartyStatusInvalid("Invalid party returned.")
 
         adherence = only_party.get("adherence", {})
         if not adherence or adherence["status"] != "Active":
-            raise ISharePartyStatusInvalid("Inactive party returned.")
+            raise ISHAREPartyStatusInvalid("Inactive party returned.")
 
         return result
 
     def verify_ca_certificate(self, json_web_token: str) -> None:
         """
-        Verify whether the given certificate is signed by an CA trusted by iShare.
+        Verify whether the given certificate is signed by an CA trusted by iSHARE.
         :param json_web_token:
         :return:
         """
@@ -271,7 +271,7 @@ class IShareSatelliteClient(CommonBaseClient):
             ):
                 return
         else:
-            raise IShareInvalidCertificateIssuer("No trusted CA found.")
+            raise ISHAREInvalidCertificateIssuer("No trusted CA found.")
 
     def verify_json_web_token(
         self,
@@ -285,13 +285,13 @@ class IShareSatelliteClient(CommonBaseClient):
         ],
     ) -> None:
         """
-        :param client_id: iShare identifier of the Service Consumer.
-        :param client_assertion: the json web token as per iShare specification.
-        :param audience: ishare participant eori of the target service
+        :param client_id: iSHARE identifier of the Service Consumer.
+        :param client_assertion: the json web token as per iSHARE specification.
+        :param audience: iSHARE participant eori of the target service
         :param grant_type:
         :param scope:
         :param client_assertion_type:
-        :raises IShareAuthenticationException: and all it's inheriting classes
+        :raises ISHAREAuthenticationException: and all it's inheriting classes
         :return:
         """
         # TODO: Method flow needs to check the revocation list
@@ -309,7 +309,7 @@ class IShareSatelliteClient(CommonBaseClient):
 
 
 class IShareAuthorizationRegistryClient(CommonBaseClient):
-    """Responsible for communicating with an iShare Authorization Registry."""
+    """Responsible for communicating with an iSHARE Authorization Registry."""
 
     def request_delegation(self, use_token: bool) -> Any:  # pragma: no cover
         """

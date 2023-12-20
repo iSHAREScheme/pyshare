@@ -6,7 +6,7 @@ from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey
 from cryptography.x509 import Certificate
 
 from python_ishare.authentication import create_jwt
-from python_ishare.clients import CommonBaseClient, IShareSatelliteClient
+from python_ishare.clients import CommonBaseClient, ISHARESatelliteClient
 
 
 @pytest.fixture(scope="session")
@@ -80,9 +80,9 @@ def common_auth_client(test_client_arguments) -> CommonBaseClient:
 
 
 @pytest.fixture()
-def satellite_client(test_client_arguments) -> IShareSatelliteClient:
+def satellite_client(test_client_arguments) -> ISHARESatelliteClient:
     """IShareSatelliteClient with test configuration."""
-    return IShareSatelliteClient(**test_client_arguments)
+    return ISHARESatelliteClient(**test_client_arguments)
 
 
 @pytest.fixture(scope="session")
